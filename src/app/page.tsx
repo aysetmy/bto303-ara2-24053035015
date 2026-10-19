@@ -28,107 +28,82 @@ export default function Home() {
     a.zone.toLowerCase().includes(search.toLowerCase())
   );
 
+  const total = animals.length;
+  const healthy = animals.filter(a => a.health.includes('Sağlıklı')).length;
+  const attention = animals.filter(a => !a.health.includes('Sağlıklı')).length;
+
   return (
-    <main style={{ minHeight: '100vh', background: '#0f172a', color: '#f8fafc', padding: '40px 20px', fontFamily: 'Inter, system-ui, sans-serif' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+    <main style={{ minHeight: '100vh', background: '#111b11', color: '#e0e0e0', padding: '40px 20px', fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
+      <div style={{ maxWidth: '1024px', margin: '0 auto' }}>
 
-        {/* Başlık */}
-        <header style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h1 style={{ fontSize: '2.8rem', fontWeight: '800', background: 'linear-gradient(to right, #38bdf8, #818cf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '10px' }}>
-            🐾 ZooMaster Pro: Hayvanat Bahçesi Yönetim Paneli
-          </h1>
-          <p style={{ color: '#94a3b8', fontSize: '1.1rem' }}>Hayvan Kayıtları, Sağlık Takibi, Besleme Programları ve Barınak Yönetimi</p>
-        </header>
-
-        {/* İstatistik Kartları */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '40px' }}>
-          <div style={{ background: '#1e293b', padding: '20px', borderRadius: '12px', border: '1px solid #334155' }}>
-            <p style={{ color: '#94a3b8', margin: '0 0 5px 0', fontSize: '0.9rem' }}>Toplam Hayvan Sayısı</p>
-            <h3 style={{ fontSize: '2rem', margin: 0, color: '#38bdf8' }}>{animals.length}</h3>
-          </div>
-          <div style={{ background: '#1e293b', padding: '20px', borderRadius: '12px', border: '1px solid #334155' }}>
-            <p style={{ color: '#94a3b8', margin: '0 0 5px 0', fontSize: '0.9rem' }}>Sağlık Durumu İyi</p>
-            <h3 style={{ fontSize: '2rem', margin: 0, color: '#4ade80' }}>{animals.filter(a => a.health.includes('Sağlıklı')).length}</h3>
-          </div>
-          <div style={{ background: '#1e293b', padding: '20px', borderRadius: '12px', border: '1px solid #334155' }}>
-            <p style={{ color: '#94a3b8', margin: '0 0 5px 0', fontSize: '0.9rem' }}>Özel Gözetimdekiler</p>
-            <h3 style={{ fontSize: '2rem', margin: 0, color: '#facc15' }}>{animals.filter(a => !a.health.includes('Sağlıklı')).length}</h3>
+        {/* Üst Bilgi - Referans Tasarıma Göre Düzenlenmiş */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', alignItems: 'center', marginBottom: '60px', borderBottom: '1px solid #333', paddingBottom: '20px' }}>
+          <header>
+            <h1 style={{ fontSize: '3rem', fontWeight: '700', color: '#4caf50', margin: '0 0 10px 0' }}>PROTECTING OUR</h1>
+            <h1 style={{ fontSize: '3rem', fontWeight: '900', color: '#a5d6a7', margin: 0 }}>ENVIRONMENT</h1>
+            <p style={{ color: '#9e9e9e', fontSize: '1.2rem', marginTop: '15px', fontStyle: 'italic' }}>Wildlife Conservation & Zoo Management</p>
+          </header>
+          <div style={{ background: '#1a2c1a', padding: '15px', borderRadius: '10px', border: '2px solid #a5d6a7', textAlign: 'center' }}>
+            <p style={{ color: '#a5d6a7', margin: 0, fontSize: '0.9rem' }}>Global Impact Score</p>
+            <h3 style={{ fontSize: '2.5rem', margin: '5px 0', color: '#c8e6c9' }}>94%</h3>
           </div>
         </div>
 
-        {/* Ana Grid: Form ve Liste */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '30px', alignItems: 'start' }}>
+        {/* İstatistik Kartları - Referans Grid Düzeni */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '30px', marginBottom: '40px' }}>
+          {[
+            { title: 'TOTAL SPECIES PROTECTED', value: total, color: '#a5d6a7' },
+            { title: 'HEALTHY POPULATION', value: healthy, color: '#81c784' },
+            { title: 'SPECIAL PROTECTION NEEDED', value: attention, color: '#c5e1a5' }
+          ].map((card, index) => (
+            <div key={index} style={{ background: '#1a2c1a', padding: '25px', borderRadius: '10px', border: `1px solid #333`, boxShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>
+              <p style={{ color: '#a5d6a7', margin: '0 0 15px 0', fontSize: '0.9rem', fontWeight: '600' }}>{card.title}</p>
+              <h3 style={{ fontSize: '3.5rem', margin: 0, color: card.color, fontWeight: '800' }}>{card.value}</h3>
+            </div>
+          ))}
+        </div>
 
-          {/* Yeni Kayıt Formu */}
-          <div style={{ background: '#1e293b', padding: '30px', borderRadius: '16px', border: '1px solid #334155', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.3)' }}>
-            <h2 style={{ fontSize: '1.3rem', marginBottom: '20px', color: '#f1f5f9', borderBottom: '1px solid #334155', paddingBottom: '10px' }}>✨ Yeni Hayvan ve Bakım Kaydı</h2>
+        {/* Ana İçerik - Form ve Liste Grid Yapısı */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.8fr', gap: '40px', alignItems: 'start' }}>
+
+          {/* Yeni Kayıt Formu - Temiz Tasarım */}
+          <div style={{ background: '#1a2c1a', padding: '40px', borderRadius: '12px', border: '1px solid #333', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+            <h2 style={{ fontSize: '1.6rem', marginBottom: '30px', color: '#a5d6a7', borderBottom: '1px solid #444', paddingBottom: '15px' }}>WHAT IS CONSERVATION?</h2>
+            <p style={{ color: '#9e9e9e', fontSize: '1rem', lineHeight: '1.6', marginBottom: '25px' }}>
+              Conservation refers to the actions taken to protect natural environments, wildlife, and resources such as water, soil, forests, and clean air. It aims to use resources wisely so that nature can continue to function in a healthy way. The goal is to achieve balance between human needs and the planet's capacity to support life.
+            </p>
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-              <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '600', color: '#cbd5e1', marginBottom: '5px' }}>Hayvan Adı</label>
-                <input type="text" placeholder="Örn: Simba" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#0f172a', border: '1px solid #475569', color: 'white', outline: 'none' }} required />
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '600', color: '#cbd5e1', marginBottom: '5px' }}>Tür</label>
-                  <input type="text" placeholder="Örn: Aslan" value={form.species} onChange={e => setForm({ ...form, species: e.target.value })} style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#0f172a', border: '1px solid #475569', color: 'white', outline: 'none' }} required />
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '600', color: '#cbd5e1', marginBottom: '5px' }}>Yaş</label>
-                  <input type="number" placeholder="Örn: 5" value={form.age} onChange={e => setForm({ ...form, age: e.target.value })} style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#0f172a', border: '1px solid #475569', color: 'white', outline: 'none' }} />
-                </div>
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '600', color: '#cbd5e1', marginBottom: '5px' }}>Cinsiyet</label>
-                  <select value={form.gender} onChange={e => setForm({ ...form, gender: e.target.value })} style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#0f172a', border: '1px solid #475569', color: 'white', outline: 'none' }}>
-                    <option value="Erkek">Erkek</option>
-                    <option value="Dişi">Dişi</option>
-                  </select>
-                </div>
-                <div>
-                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '600', color: '#cbd5e1', marginBottom: '5px' }}>Barınak / Bölge</label>
-                  <input type="text" placeholder="Örn: Afrika Savanı" value={form.zone} onChange={e => setForm({ ...form, zone: e.target.value })} style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#0f172a', border: '1px solid #475569', color: 'white', outline: 'none' }} required />
-                </div>
-              </div>
-              <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '600', color: '#cbd5e1', marginBottom: '5px' }}>Sağlık Durumu & Aşılar</label>
-                <input type="text" placeholder="Örn: Sağlıklı / Aşıları Tam" value={form.health} onChange={e => setForm({ ...form, health: e.target.value })} style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#0f172a', border: '1px solid #475569', color: 'white', outline: 'none' }} />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '600', color: '#cbd5e1', marginBottom: '5px' }}>Besleme / Diyet Programı</label>
-                <input type="text" placeholder="Örn: Et ve Vitamin (Günde 5kg)" value={form.diet} onChange={e => setForm({ ...form, diet: e.target.value })} style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#0f172a', border: '1px solid #475569', color: 'white', outline: 'none' }} />
-              </div>
-              <button type="submit" style={{ padding: '12px', background: 'linear-gradient(to right, #2563eb, #3b82f6)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', fontSize: '1rem', marginTop: '10px', transition: 'opacity 0.2s' }}>
-                Sisteme Kaydet
+              <input type="text" placeholder="Animal Name (e.g., 'Leo')" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} style={{ width: '100%', padding: '12px', borderRadius: '6px', background: '#111b11', border: '1px solid #444', color: 'white', outline: 'none' }} required />
+              <input type="text" placeholder="Species (e.g., 'Lion')" value={form.species} onChange={e => setForm({ ...form, species: e.target.value })} style={{ width: '100%', padding: '12px', borderRadius: '6px', background: '#111b11', border: '1px solid #444', color: 'white', outline: 'none' }} required />
+              <input type="text" placeholder="Zone (e.g., 'African Savanna')" value={form.zone} onChange={e => setForm({ ...form, zone: e.target.value })} style={{ width: '100%', padding: '12px', borderRadius: '6px', background: '#111b11', border: '1px solid #444', color: 'white', outline: 'none' }} required />
+              <button type="submit" style={{ padding: '14px', background: '#2e7d32', color: 'white', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '1rem', marginTop: '15px', transition: 'background 0.2s' }}>
+                ADD TO CONSERVATION LIST
               </button>
             </form>
           </div>
 
-          {/* Liste ve Arama Bölümü */}
-          <div style={{ background: '#1e293b', padding: '30px', borderRadius: '16px', border: '1px solid #334155', boxShadow: '0 10px 25px -5px rgba(0,0,0,0.3)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', borderBottom: '1px solid #334155', paddingBottom: '10px', gap: '15px' }}>
-              <h2 style={{ fontSize: '1.3rem', color: '#f1f5f9', margin: 0 }}>📋 Canlı Hayvan Listesi</h2>
-              <input type="text" placeholder="Hayvan veya tür ara..." value={search} onChange={e => setSearch(e.target.value)} style={{ padding: '8px 12px', borderRadius: '8px', background: '#0f172a', border: '1px solid #475569', color: 'white', fontSize: '0.9rem', outline: 'none', width: '180px' }} />
+          {/* Canlı Hayvan Listesi - Grid Yapısı */}
+          <div style={{ background: '#1a2c1a', padding: '40px', borderRadius: '12px', border: '1px solid #333', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px', borderBottom: '1px solid #444', paddingBottom: '15px' }}>
+              <h2 style={{ fontSize: '1.6rem', color: '#a5d6a7', margin: 0 }}>LIVE CONSERVATION STATUS</h2>
+              <input type="text" placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)} style={{ padding: '10px', borderRadius: '6px', background: '#111b11', border: '1px solid #444', color: 'white', fontSize: '0.9rem', outline: 'none', width: '200px' }} />
             </div>
 
             {filteredAnimals.length === 0 ? (
-              <div style={{ textAlign: 'center', padding: '40px', color: '#64748b', fontStyle: 'italic' }}>Aradığınız kriterlere uygun hayvan bulunamadı.</div>
+              <div style={{ textAlign: 'center', padding: '40px', color: '#666', fontStyle: 'italic' }}>No animals match your search criteria.</div>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxHeight: '600px', overflowY: 'auto' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '25px', maxHeight: '600px', overflowY: 'auto' }}>
                 {filteredAnimals.map((animal) => (
-                  <div key={animal.id} style={{ background: '#0f172a', padding: '18px', borderRadius: '12px', border: '1px solid #334155', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                        <h3 style={{ margin: 0, color: '#f8fafc', fontSize: '1.1rem' }}>{animal.name}</h3>
-                        <span style={{ background: '#334155', color: '#38bdf8', padding: '2px 8px', borderRadius: '6px', fontSize: '0.75rem', fontWeight: '600' }}>{animal.species}</span>
-                        <span style={{ background: '#1e293b', color: '#94a3b8', padding: '2px 8px', borderRadius: '6px', fontSize: '0.75rem' }}>{animal.zone}</span>
-                      </div>
-                      <p style={{ margin: '4px 0', color: '#cbd5e1', fontSize: '0.9rem' }}>👤 <strong>Yaş / Cinsiyet:</strong> {animal.age} yaş, {animal.gender}</p>
-                      <p style={{ margin: '4px 0', color: '#cbd5e1', fontSize: '0.9rem' }}>🩺 <strong>Sağlık / Aşı:</strong> <span style={{ color: animal.health.includes('Sağlıklı') ? '#4ade80' : '#facc15' }}>{animal.health}</span></p>
-                      <p style={{ margin: '4px 0', color: '#cbd5e1', fontSize: '0.9rem' }}>🥩 <strong>Besleme:</strong> {animal.diet}</p>
+                  <div key={animal.id} style={{ background: '#111b11', padding: '25px', borderRadius: '10px', border: '1px solid #444', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
+                      <h3 style={{ margin: 0, color: '#c8e6c9', fontSize: '1.2rem' }}>{animal.name}</h3>
+                      <span style={{ background: '#2e7d32', color: 'white', padding: '3px 10px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase' }}>{animal.species}</span>
                     </div>
-                    <button onClick={() => handleDelete(animal.id)} style={{ background: '#7f1d1d', color: '#fca5a5', border: 'none', padding: '6px 10px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: '600' }}>
-                      Sil
+                    <p style={{ margin: '5px 0', color: '#9e9e9e', fontSize: '0.9rem' }}><strong>Zone:</strong> {animal.zone}</p>
+                    <p style={{ margin: '5px 0', color: '#9e9e9e', fontSize: '0.9rem' }}><strong>Health:</strong> <span style={{ color: animal.health.includes('Sağlıklı') ? '#81c784' : '#ffd54f' }}>{animal.health}</span></p>
+                    <p style={{ margin: '5px 0', color: '#9e9e9e', fontSize: '0.9rem' }}><strong>Diet:</strong> {animal.diet}</p>
+                    <button onClick={() => handleDelete(animal.id)} style={{ background: '#d32f2f', color: '#ffcdd2', border: 'none', padding: '8px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', fontWeight: '700', marginTop: '10px', textTransform: 'uppercase' }}>
+                      Remove from List
                     </button>
                   </div>
                 ))}
