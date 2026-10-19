@@ -1,0 +1,88 @@
+// This is your Prisma schema file.
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Kafes ───────────────────────────────────────────────────────────────────
+// Hayvanların yaşadığı fiziksel kafes / bölme
+model Kafes {
+  id        Int      @id @default(autoincrement())
+  ad        String
+  kapasite  Int      // maksimum hayvan sayısı (kapasite kuralı burada uygulanır)
+  konum     String   // örn. "A Blok - Zemin Kat"
+  tur       String   // örn. "Açık Alan", "Kapalı Kafes", "Teras"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // İlişki: bir kafeste birden fazla hayvan olabilir (bire-çok)
+  hayvanlar Hayvan[]
+}
+
+// ─── Hayvan ──────────────────────────────────────────────────────────────────
+// Hayvanat bahçesindeki her bir hayvan
+model Hayvan {
+  id          Int      @id @default(autoincrement())
+  ad          String
+  tur         String   // örn. "Aslan", "Papağan", "Kaplumbağa"
+  dogumTarihi DateTime
+  cinsiyet    String   // "Erkek" | "Dişi" | "Bilinmiyor"
+  durum       String   @default("Sağlıklı") // "Sağlıklı" | "Hasta" | "Gözlem Altında"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // FK → Kafes (bire-çok): kafes silinirse hayvan silinmez (Restrict)
+  kafesId     Int
+  kafes       Kafes    @relation(fields: [kafesId], references: [id], onDelete: Restrict)
+
+  // İlişki: bir hayvanın birden fazla bakım kaydı (bire-çok)
+  bakimKayitlari BakimKaydi[]
+
+  @@index([kafesId])
+}
+
+// ─── Bakici ──────────────────────────────────────────────────────────────────
+// Bakım işlemlerini gerçekleştiren personel
+model Bakici {
+  id        Int      @id @default(autoincrement())
+  ad        String
+  soyad     String
+  rol       String   // "Bakıcı" | "Veteriner" | "Eğitmen"
+  eposta    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // İlişki: bir bakıcı birden fazla bakım kaydı oluşturabilir (bire-çok)
+  bakimKayitlari BakimKaydi[]
+}
+
+// ─── BakimKaydi ──────────────────────────────────────────────────────────────
+// Her bakım / muayene / besleme olayı
+// → Hayvan ile Bakici arasında örtük çoka-çok ilişki sağlar
+model BakimKaydi {
+  id        Int      @id @default(autoincrement())
+  tarih     DateTime @default(now())
+  bakimTuru String   // "Besleme" | "Veteriner Muayenesi" | "Tımar" | "Egzersiz"
+  notlar    String?  // opsiyonel gözlem notu
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // FK → Hayvan: hayvan silinince bakım kayıtları da silinir (Cascade)
+  hayvanId  Int
+  hayvan    Hayvan @relation(fields: [hayvanId], references: [id], onDelete: Cascade)
+
+  // FK → Bakici: bakıcı silinirse kayıt silinmez (Restrict)
+  bakiciId  Int
+  bakici    Bakici @relation(fields: [bakiciId], references: [id], onDelete: Restrict)
+
+  @@index([hayvanId])
+  @@index([bakiciId])
+  @@index([tarih])
+  // Günlük bakım sınırı iş kuralı uygulama katmanında (lib/rules) kontrol edilir
+}
