@@ -1,69 +1,26 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import React from 'react';
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main style={{ padding: '40px', fontFamily: 'Arial, sans-serif', maxWidth: '800px', margin: '0 auto' }}>
+      <h1 style={{ color: '#2c3e50', textAlign: 'center' }}>🐾 Hayvanat Bahçesi Yönetim Sistemi</h1>
+
+      <div style={{ background: '#f8f9fa', padding: '20px', borderRadius: '8px', marginTop: '20px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+        <h2>Yeni Hayvan Ekle</h2>
+        <form style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <input type="text" placeholder="Hayvan Adı" style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }} />
+          <input type="text" placeholder="Tür (Örn: Aslan, Maymun)" style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }} />
+          <input type="number" placeholder="Yaş" style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }} />
+          <button type="submit" style={{ padding: '10px', background: '#27ae60', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>
+            Hayvanı Kaydet
+          </button>
+        </form>
+      </div>
+
+      <div style={{ marginTop: '40px' }}>
+        <h2>Kayıtlı Hayvanlar Listesi</h2>
+        <p style={{ color: '#7f8c8d' }}>Henüz kayıtlı bir hayvan bulunmuyor. Yukarıdaki formdan ekleme yapabilirsiniz.</p>
+      </div>
+    </main>
   );
 }
